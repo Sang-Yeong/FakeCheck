@@ -1,3 +1,5 @@
 print('')
 print('test')
 print('end')
+print('test')
+print('diff')
