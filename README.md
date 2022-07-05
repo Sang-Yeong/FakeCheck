@@ -23,7 +23,7 @@ deepfake로 인한 피해를 줄이기 위해서 모델 방해공격(adversarial
 모델은 adversarial training과 image processing defense방법을 적용하여 기존의 모델보다 더 robust하도록 생성하였다.
 
 
-#### 1. Adversarial Training
+### 1. Adversarial Training
 - 데이터를 로드한 후 adversarial example 생성 -> train set에 adversarial attack이 들어간 image 추가
 - 이미지 전처리에서 normalize를 적용한 결과 pixel값(-1&#126;1)과 adversarial attack에 대한 input값(0&#126;1)이 다름 -> 모델에 normalize를 수행하는 layer 추가
 - adversarial training은 여러 케이스 중 성능이 가장 높게 나온 6(adv img):4(ori img)의 비율로 학습한 모델을 선택하여 진행
@@ -33,12 +33,12 @@ deepfake로 인한 피해를 줄이기 위해서 모델 방해공격(adversarial
 |adv_training<br>ori:adv = 4:6|<img width="300" src="./pic/ori_test.png"/>|<img width="300" src="./pic/adv_test.png"/>|
 
 
-#### 2. Image Processing Defense
+### 2. Image Processing Defense
 - Resizing<br>Resizing은 local interpolation을 통해 smoothing 효과를 나타내기 때문에 adversarial example의 perturbation(noise)를 일부 제거하는 효과가 있다. 여러 비율로 resizing 해본 결과, 가장 높은 공격 방어율을 보인 3배 비율을 이미지에 적용하였다.
 
 ```python
-tensor2pil.resize((74, 74))
-tensor2pil.resize((224, 224))
+	tensor2pil.resize((74, 74))
+	tensor2pil.resize((224, 224))
 ```
 
 - JPEG압축<br>JPEG 압축은 이미지의 고주파 구성요소를 압축하고, adversarial perturbation도 고주파에 속하기 때문에 JPEG 압축을 통해 공격 효과를 줄일 수 있다. 많은 테스트 결과 quality factor가 15일 때 가장 적절했으며, 이는 선형적 변환인 resizing보다 공격 방어율이 더 높다는 것을 확인해 볼 수 있었다.
